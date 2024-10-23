@@ -1,3 +1,5 @@
+`default_nettype wire
+
 /*
    CS/ECE 552 Spring '22
   
@@ -11,11 +13,13 @@ module wb (
    output wire [15:0] RegData
 );
    // TODO: Your code here
-   case(RegSrc) :
-         2'b00 : RegData = PC;
-         2'b01 : RegData = ReadData;
-         2'b10 : RegData = ALUOut;
-         2'b11 : RegData = B;
-   endcase 
+   
+   assign RegData = (RegSrc == 2'b00) ? PC :
+                 (RegSrc == 2'b01) ? ReadData :
+                 (RegSrc == 2'b10) ? ALUOut :
+                 (RegSrc == 2'b11) ? B : 0; // Default case, if needed
+
+
 endmodule
-`default_nettype wire
+
+

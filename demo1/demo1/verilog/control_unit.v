@@ -1,4 +1,4 @@
-module ControlUnit(
+module control_unit(
     input wire [4:0] opcode, // 5-bit opcode
     output reg ALUJmp,
     output reg ImmSrc,
@@ -11,7 +11,8 @@ module ControlUnit(
     output reg Cin,
     output reg MemWrt,
     output reg [2:0] BranchCnd,
-    output reg [2:0] Op
+    output reg [2:0] Op,
+    output reg ZeroExt
 );
 
     always @(*) begin
@@ -53,6 +54,7 @@ module ControlUnit(
                 RegWrt = 1;
                 BSrc = 2'b01;
                 Op = 3'b111;
+                ZeroExt = 1;
             end
             5'b01011: begin // ANDNI
                 RegSrc = 2'b10;
@@ -61,6 +63,7 @@ module ControlUnit(
                 BSrc = 2'b01;
                 InvB = 1; // NOT Rt
                 Op = 3'b101;
+                ZeroExt = 1;
             end
 
             // Shift and Rotate Instructions
@@ -70,6 +73,7 @@ module ControlUnit(
                 RegWrt = 1;
                 BSrc = 2'b01;
                 Op = 3'b000;
+                ZeroExt = 1;
             end
             5'b10101: begin // SLLI
                 RegSrc = 2'b10;
@@ -77,6 +81,7 @@ module ControlUnit(
                 RegWrt = 1;
                 BSrc = 2'b01;
                 Op = 3'b001;
+                ZeroExt = 1;
             end
             5'b10110: begin // RORI
                 RegSrc = 2'b10;
@@ -84,6 +89,7 @@ module ControlUnit(
                 RegWrt = 1;
                 BSrc = 2'b01;
                 Op = 3'b010;
+                ZeroExt = 1;
             end
             5'b10111: begin // SRLI
                 RegSrc = 2'b10;
@@ -91,6 +97,7 @@ module ControlUnit(
                 RegWrt = 1;
                 BSrc = 2'b01;
                 Op = 3'b011;
+                ZeroExt = 1;
             end
 
             // Memory Instructions
@@ -160,6 +167,7 @@ module ControlUnit(
                 RegWrt = 1;
                 RegSrc = 2'b10;
                 Op = 3'b111;
+                ZeroExt = 1;
             end
             5'b11011: begin // ANDN
                 RegSrc = 2'b10;
@@ -168,6 +176,7 @@ module ControlUnit(
                 RegSrc = 2'b10;
                 InvB = 1; // NOT Rt
                 Op = 3'b101;
+                ZeroExt = 1;
             end
             5'b11010: begin // ROL
                 RegSrc = 2'b10;
@@ -175,6 +184,7 @@ module ControlUnit(
                 RegWrt = 1;
                 RegSrc = 2'b10;
                 Op = 3'b000; // ROL operation
+                ZeroExt = 1;
             end
             5'b11010: begin // SLL
                 RegSrc = 2'b10;
@@ -182,6 +192,7 @@ module ControlUnit(
                 RegWrt = 1;
                 RegSrc = 2'b10;
                 Op = 3'b001; // SLL operation
+                ZeroExt = 1;
             end
             5'b11010: begin // ROR
                 RegSrc = 2'b10;
@@ -189,6 +200,7 @@ module ControlUnit(
                 RegWrt = 1;
                 RegSrc = 2'b10;
                 Op = 3'b010; // ROR operation
+                ZeroExt = 1;
             end
             5'b11010: begin // SRL
                 RegSrc = 2'b10;
@@ -196,6 +208,7 @@ module ControlUnit(
                 RegWrt = 1;
                 RegSrc = 2'b10;
                 Op = 3'b011; // SRL operation
+                ZeroExt = 1;
             end
             5'b11100: begin // SEQ
                 RegDst = 2'b10;

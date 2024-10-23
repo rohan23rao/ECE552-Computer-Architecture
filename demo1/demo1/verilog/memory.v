@@ -15,7 +15,7 @@ module memory (
    wire [15:0] immediate, addPC, tempPC;
    
    assign immediate = ImmSrc ? Immediate1 : Immediate0;
-   alu add(.InA(PC), .InB(immediate), .Cin(1'b0), .Oper(3'b100), .invA(1'b0), .invB(1'b0), .sign(1'b0), .Out(addPC), .Zero(1'b0), .Ofl(1'b0));
+   cla_16b adder(.sum(addPC), .c_out(), .a(PC), .b(immediate), .c_in(1'b0));
    assign tempPC = Brch ? addPC : PC;
    assign NextPC = ALUJmp ? ALUOut : tempPC;
    // TODO: Your code here

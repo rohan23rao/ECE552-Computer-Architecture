@@ -33,31 +33,32 @@ module proc (/*AUTOARG*/
 
    // Control signals between stages
    wire ALUJmp, ImmSrc, RegWrt, InvA, InvB, Cin, MemWrt, ZeroExt;
-   wire [15:0] inst_5_ext, inst_8_ext, inst_11_ext;
+   wire [15:0] inst_5_ext, inst_8_ext, inst_11_ext, RegData;
 
    // Signals between decode and execute
    wire [2:0] BrchCnd, Op;
    wire Brch;
 
    // Fetch stage
-   fetch fet1 (.PC(PC), .clk(clk), .rst(rst), .Instr(Instr), .PC2(PC2));
+   fetch fetch0 (.PC(PC), .clk(clk), .rst(rst), .Instr(Instr), .PC2(PC2));
 
    // Decode stage
-   decode dec1 (.clk(clk), .rst(rst), .instruction(Instr), .writeData(RegData), 
+   decode decode0 (.clk(clk), .rst(rst), .instruction(Instr), .writeData(RegData), 
                 .ALUJmp(ALUJmp), .ImmSrc(ImmSrc), .RegSrc(RegSrc), .RegWrt(RegWrt), 
                 .InvA(InvA), .InvB(InvB), .Cin(Cin), .MemWrt(MemWrt), .ZeroExt(ZeroExt),
                 .RegDst(RegDst), .BSrc(BSrc), 
                 .read1Data(read1Data), .read2Data(read2Data), 
-                .inst_5_ext(inst_5_ext), .inst_8_ext(inst_8_ext), .inst_11_ext(inst_11_ext));
+                .inst_5_ext(inst_5_ext), .inst_8_ext(inst_8_ext), .inst_11_ext(inst_11_ext),
+                .BranchCnd(BrchCnd), .Op(Op));
 
    // Execute stage
-   execute exec1 (.A(read1Data), .read2Data(read2Data), .ext_5(inst_5_ext), .ext_8(inst_8_ext), 
+   execute execute0 (.A(read1Data), .read2Data(read2Data), .ext_5(inst_5_ext), .ext_8(inst_8_ext), 
                   .BrchCnd(BrchCnd), .Op(Op), .BSrc(BSrc), 
                   .InvA(InvA), .InvB(InvB), .Cin(Cin), 
                   .ALUOut(ALUOut), .BOut(BOut), .Brch(Brch));
 
    // Memory stage
-   memory mem1 (.WriteData(read2Data), .Address(ALUOut), 
+   memory memory0 (.WriteData(read2Data), .Address(ALUOut), 
                 .Immediate0(inst_8_ext), .Immediate1(inst_11_ext), 
                 .PC(PC2), .ALUOut(ALUOut), .MemWrt(MemWrt), .ImmSrc(ImmSrc), 
                 .ALUJmp(ALUJmp), .Brch(Brch), .clk(clk), .rst(rst), 

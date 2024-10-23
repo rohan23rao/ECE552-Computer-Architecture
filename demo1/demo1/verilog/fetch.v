@@ -6,8 +6,8 @@
 */
 `default_nettype none
 module fetch (/* TODO: Add appropriate inputs/outputs for your fetch stage here*/
-   input wire [15:0] PC
-   input wire clk, rst
+   input wire [15:0] PC,
+   input wire clk, rst,
    output wire [15:0] Instr, PC2
 );
    //Instruction Memory
